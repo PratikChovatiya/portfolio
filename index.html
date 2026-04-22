@@ -4,1077 +4,584 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pratik Chovatiya — Senior iOS Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --card: #16161f;
-    --border: rgba(255,255,255,0.07);
-    --accent: #5b8fff;
-    --accent2: #ff6b6b;
-    --accent3: #00e5c3;
-    --text: #e8e8f0;
-    --muted: #7a7a90;
-    --bright: #ffffff;
-    --glow: rgba(91,143,255,0.15);
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+:root {
+  --bg: #f6f4ef;
+  --bg2: #edeae2;
+  --dark: #1c1814;
+  --card: #ffffff;
+  --accent: #e8521a;
+  --accent2: #2d5be3;
+  --accent3: #1a9e72;
+  --text: #3c3830;
+  --muted: #8a7f72;
+  --border: rgba(28,24,20,0.1);
+  --shadow: 0 2px 20px rgba(28,24,20,0.07);
+}
+body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; line-height:1.6; overflow-x:hidden; cursor:none; }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* CURSOR */
+#cur { width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply; }
+#cur2 { width:34px;height:34px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .1s linear;opacity:.45; }
 
-  html { scroll-behavior: smooth; }
+/* NAV */
+nav { position:fixed;top:0;left:0;right:0;z-index:200;padding:0 52px;height:62px;display:flex;justify-content:space-between;align-items:center;background:rgba(246,244,239,0.93);backdrop-filter:blur(18px);border-bottom:1px solid var(--border); }
+.nav-logo { font-weight:800;font-size:16px;color:var(--dark);display:flex;align-items:center;gap:9px; }
+.logo-pip { width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pip 2.5s ease-in-out infinite; }
+@keyframes pip { 0%,100%{transform:scale(1)}50%{transform:scale(1.6);opacity:.6} }
+.nav-links { display:flex;gap:30px;align-items:center; }
+.nav-links a { color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;position:relative; }
+.nav-links a::after { content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--accent);transform:scaleX(0);transition:transform .2s; }
+.nav-links a:hover { color:var(--dark); }
+.nav-links a:hover::after { transform:scaleX(1); }
+.nav-cta { background:var(--dark)!important;color:#fff!important;padding:8px 20px;border-radius:100px;font-weight:700!important; }
+.nav-cta::after { display:none!important; }
+.nav-cta:hover { background:var(--accent)!important; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
+/* HERO */
+.hero { min-height:100vh;padding:110px 52px 80px;display:grid;grid-template-columns:1fr 360px;gap:56px;align-items:center;position:relative;overflow:hidden; }
+.orb { position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none; }
+.o1 { width:480px;height:480px;background:rgba(232,82,26,.1);top:-80px;right:-60px; }
+.o2 { width:320px;height:320px;background:rgba(45,91,227,.07);bottom:60px;left:60px; }
+.h-eyebrow { display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;opacity:0;animation:up .6s .1s forwards; }
+.h-line { height:1.5px;width:32px;background:var(--accent); }
+.h-name { font-weight:800;font-size:clamp(40px,5.5vw,72px);line-height:1.0;letter-spacing:-2px;color:var(--dark);margin-bottom:14px;opacity:0;animation:up .7s .25s forwards; }
+.h-name .ghost { color:transparent;-webkit-text-stroke:1.5px rgba(28,24,20,.2); }
+.h-role { display:inline-flex;align-items:center;gap:8px;background:var(--dark);color:#fff;font-size:12px;font-weight:700;padding:7px 14px;border-radius:7px;margin-bottom:22px;opacity:0;animation:up .6s .38s forwards; }
+.h-role em { color:var(--accent);font-style:normal; }
+.h-desc { font-size:15px;color:var(--muted);line-height:1.75;max-width:480px;margin-bottom:36px;opacity:0;animation:up .6s .5s forwards; }
+.h-btns { display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:up .6s .62s forwards; }
+.btn-solid { background:var(--dark);color:#fff;padding:13px 26px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;transition:background .2s,transform .18s,box-shadow .18s; }
+.btn-solid:hover { background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,82,26,.28); }
+.btn-out { border:1.5px solid var(--border);color:var(--text);padding:13px 26px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s,color .2s,transform .18s; }
+.btn-out:hover { border-color:var(--dark);color:var(--dark);transform:translateY(-2px); }
 
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
+/* hero card */
+.h-card { opacity:0;animation:up .8s .6s forwards; }
+.hcard { background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:var(--shadow); }
+.hc-head { display:flex;align-items:center;gap:12px;margin-bottom:22px; }
+.hc-av { width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#f5a020);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff; }
+.hc-nm { font-weight:700;font-size:14px;color:var(--dark); }
+.hc-loc { font-size:11px;color:var(--muted); }
+.hc-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px; }
+.hcs { background:var(--bg);border-radius:10px;padding:13px;text-align:center; }
+.hcs-n { font-weight:800;font-size:21px;color:var(--dark);letter-spacing:-.5px; }
+.hcs-n sub { font-size:12px;color:var(--accent); }
+.hcs-l { font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase; }
+.hc-pills { display:flex;flex-wrap:wrap;gap:5px; }
+.hc-pill { background:var(--bg);border:1px solid var(--border);padding:4px 10px;border-radius:100px;font-size:11px;font-weight:500;color:var(--text);transition:background .18s,color .18s; }
+.hc-pill:hover { background:var(--dark);color:#fff; }
 
-  /* CURSOR */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: screen;
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(91,143,255,0.5);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.15s ease;
-    transform: translate(-12px, -12px);
-  }
+@keyframes up { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 20px 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(10,10,15,0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--bright);
-    letter-spacing: -0.5px;
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 36px; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--bright); }
-  .nav-cta {
-    background: var(--accent);
-    color: #fff !important;
-    padding: 8px 20px;
-    border-radius: 4px;
-    transition: opacity 0.2s !important;
-  }
-  .nav-cta:hover { opacity: 0.85; color: #fff !important; }
+/* TICKER */
+.ticker { overflow:hidden;padding:13px 0;background:var(--dark); }
+.ticker-row { display:flex;animation:tick 26s linear infinite;white-space:nowrap; }
+.ticker-row:hover { animation-play-state:paused; }
+.ti { display:inline-flex;align-items:center;gap:7px;padding:0 22px;font-size:12px;font-weight:500;color:rgba(255,255,255,.45);border-right:1px solid rgba(255,255,255,.07); }
+.ti b { color:rgba(255,255,255,.88);font-weight:600; }
+@keyframes tick { from{transform:translateX(0)}to{transform:translateX(-50%)} }
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 60px 80px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(91,143,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(91,143,255,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(91,143,255,0.12) 0%, transparent 70%);
-    top: -100px; right: -100px;
-    pointer-events: none;
-  }
-  .hero-glow2 {
-    position: absolute;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,229,195,0.08) 0%, transparent 70%);
-    bottom: -50px; left: 200px;
-    pointer-events: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(91,143,255,0.1);
-    border: 1px solid rgba(91,143,255,0.25);
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.2s forwards;
-  }
-  .badge-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent3);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.3); }
-  }
-  .hero-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(48px, 7vw, 96px);
-    line-height: 0.95;
-    letter-spacing: -3px;
-    color: var(--bright);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.4s forwards;
-  }
-  .hero-title .line2 {
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
-  }
-  .hero-title .accent { color: var(--accent); }
-  .hero-desc {
-    font-family: 'Fraunces', serif;
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--muted);
-    max-width: 520px;
-    line-height: 1.6;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.6s forwards;
-  }
-  .hero-desc em { color: var(--text); font-style: italic; }
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.8s forwards;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    padding: 14px 32px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(91,143,255,0.4);
-  }
-  .btn-outline {
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 14px 32px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .hero-stats {
-    position: absolute;
-    right: 60px;
-    bottom: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    opacity: 0;
-    animation: fadeUp 0.7s 1s forwards;
-  }
-  .stat-item { text-align: right; }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 36px;
-    color: var(--bright);
-    line-height: 1;
-  }
-  .stat-num span { color: var(--accent); }
-  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+/* STATS */
+.stats { background:var(--dark);padding:60px 52px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;position:relative;overflow:hidden; }
+.stats::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,82,26,.14) 0%,transparent 60%); }
+.sb { padding:28px;text-align:center;border-right:1px solid rgba(255,255,255,.06);position:relative;z-index:1;transition:background .2s; }
+.sb:last-child { border-right:none; }
+.sb:hover { background:rgba(255,255,255,.03); }
+.sb-n { font-weight:800;font-size:42px;color:#fff;letter-spacing:-2px;line-height:1;margin-bottom:7px; }
+.sb-n sup { font-size:22px;color:var(--accent); }
+.sb-l { font-size:11px;color:rgba(255,255,255,.38);font-weight:500;letter-spacing:.07em;text-transform:uppercase; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* SECTION */
+.sec { padding:96px 52px; }
+.sec.alt { background:var(--bg2); }
+.eyebrow { font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:11px; }
+.eyebrow::before { content:'';width:26px;height:1.5px;background:var(--accent); }
+.sec-h { font-weight:800;font-size:clamp(26px,3.5vw,42px);color:var(--dark);letter-spacing:-1px;line-height:1.12;margin-bottom:52px; }
 
-  /* SECTIONS */
-  section {
-    padding: 100px 60px;
-    position: relative;
-  }
-  .section-label {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-label::after {
-    content: '';
-    height: 1px;
-    width: 40px;
-    background: var(--accent);
-    opacity: 0.5;
-  }
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(32px, 4vw, 52px);
-    color: var(--bright);
-    line-height: 1.1;
-    letter-spacing: -1.5px;
-    margin-bottom: 60px;
-  }
+/* SKILLS TABS */
+.stabs { display:grid;grid-template-columns:220px 1fr;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:var(--shadow); }
+.tab-nav { background:var(--bg2);border-right:1px solid var(--border);padding:7px; }
+.stab { display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:9px;cursor:pointer;border:none;background:transparent;width:100%;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:2px;transition:background .18s; }
+.stab:hover { background:var(--bg); }
+.stab.on { background:var(--card);box-shadow:var(--shadow); }
+.stab-ic { font-size:17px; }
+.stab-nm { font-size:13px;font-weight:600;color:var(--dark); }
+.tab-body { padding:34px; }
+.tpanel { display:none; }
+.tpanel.on { display:block; }
+.tp-h { font-size:19px;font-weight:800;color:var(--dark);letter-spacing:-.4px;margin-bottom:7px; }
+.tp-d { font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.65; }
+.tp-tags { display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px; }
+.tp-tag { padding:6px 13px;border-radius:6px;font-size:12px;font-weight:600;background:var(--bg);color:var(--text);border:1px solid var(--border);transition:all .18s;cursor:default; }
+.tp-tag:hover { background:var(--dark);color:#fff;border-color:var(--dark);transform:translateY(-1px); }
+.bars { display:flex;flex-direction:column;gap:9px; }
+.bar-row { }
+.bar-lbl { display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500; }
+.bar-track { height:5px;background:var(--bg2);border-radius:100px;overflow:hidden; }
+.bar-fill { height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),#f5a020);width:0;transition:width 1s cubic-bezier(.22,.61,.36,1); }
 
-  /* SKILLS */
-  .skills-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .skill-card {
-    background: var(--card);
-    padding: 32px;
-    transition: background 0.2s;
-  }
-  .skill-card:hover { background: #1a1a26; }
-  .skill-icon {
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
-  .skill-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--bright);
-    margin-bottom: 10px;
-  }
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .tag {
-    background: rgba(91,143,255,0.08);
-    border: 1px solid rgba(91,143,255,0.15);
-    color: var(--muted);
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    letter-spacing: 0.06em;
-  }
+/* EXP */
+.exp-grid { display:grid;grid-template-columns:1fr 1fr;gap:18px; }
+.ecard { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s; }
+.ecard:hover { transform:translateY(-4px);box-shadow:0 16px 44px rgba(28,24,20,.11); }
+.ecard::before { content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#f5a020); }
+.ecard.b2::before { background:linear-gradient(90deg,var(--accent2),#6d6bfa); }
+.ec-top { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px; }
+.ec-co { font-weight:800;font-size:17px;color:var(--dark);letter-spacing:-.3px;margin-bottom:3px; }
+.ec-tag { display:inline-block;background:var(--bg2);color:var(--text);font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;border:1px solid var(--border); }
+.ec-per { font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.04em;background:rgba(232,82,26,.08);padding:5px 10px;border-radius:6px; }
+.ecard.b2 .ec-per { color:var(--accent2);background:rgba(45,91,227,.08); }
+.ec-list { list-style:none;margin:14px 0; }
+.ec-list li { font-size:13px;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:9px; }
+.ec-list li:last-child { border-bottom:none; }
+.ec-list li::before { content:'↗';color:var(--accent);font-size:11px;flex-shrink:0;margin-top:2px; }
+.ecard.b2 .ec-list li::before { color:var(--accent2); }
+.ec-chips { display:flex;flex-wrap:wrap;gap:6px;margin-top:14px; }
+.ec-chip { font-size:10px;font-weight:700;padding:4px 9px;border-radius:100px;background:rgba(26,158,114,.1);color:var(--accent3);border:1px solid rgba(26,158,114,.2); }
 
-  /* EXPERIENCE */
-  .exp-timeline { position: relative; }
-  .exp-timeline::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 8px; bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-  }
-  .exp-item {
-    padding-left: 40px;
-    margin-bottom: 60px;
-    position: relative;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 0.6s, transform 0.6s;
-  }
-  .exp-item.visible { opacity: 1; transform: translateX(0); }
-  .exp-dot {
-    position: absolute;
-    left: -5px; top: 8px;
-    width: 11px; height: 11px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: 2px solid var(--bg);
-  }
-  .exp-company {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--bright);
-  }
-  .exp-role {
-    color: var(--accent);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    margin-bottom: 4px;
-  }
-  .exp-period {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
-  .exp-list { list-style: none; }
-  .exp-list li {
-    color: var(--muted);
-    font-size: 13px;
-    padding: 6px 0;
-    padding-left: 16px;
-    position: relative;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-  }
-  .exp-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 11px;
-  }
-  .exp-list li:hover { color: var(--text); }
-  .achievements {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .achievement-tag {
-    background: rgba(0,229,195,0.06);
-    border: 1px solid rgba(0,229,195,0.15);
-    color: var(--accent3);
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 4px;
-  }
+/* APPS */
+.filter-row { display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap; }
+.fb { padding:7px 18px;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s; }
+.fb:hover,.fb.on { background:var(--dark);color:#fff;border-color:var(--dark); }
+.apps-g { display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:15px; }
+.acard { background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .22s,box-shadow .22s;cursor:pointer; }
+.acard:hover { transform:translateY(-5px);box-shadow:0 18px 48px rgba(28,24,20,.13); }
+.ac-t { padding:22px 22px 0;display:flex;align-items:flex-start;gap:13px; }
+.ac-ic { width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0; }
+.ac-nm { font-size:15px;font-weight:800;color:var(--dark);letter-spacing:-.3px;margin-bottom:2px; }
+.ac-ct { font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em; }
+.ac-b { padding:12px 22px 18px; }
+.ac-d { font-size:12px;color:var(--muted);line-height:1.6; }
+.ac-f { padding:13px 22px;border-top:1px solid var(--border);background:var(--bg);display:flex;justify-content:space-between;align-items:center; }
+.ac-badge { font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(26,158,114,.1);color:var(--accent3);border:1px solid rgba(26,158,114,.2); }
+.ac-lnk { font-size:12px;font-weight:700;color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:5px;transition:gap .18s; }
+.ac-lnk:hover { gap:9px; }
+.ic-or { background:linear-gradient(135deg,#ff6b35,#f7c59f); }
+.ic-bl { background:linear-gradient(135deg,#2d5be3,#74c0fc); }
+.ic-gr { background:linear-gradient(135deg,#1a9e72,#6ee7b7); }
+.ic-pu { background:linear-gradient(135deg,#7c3aed,#c084fc); }
+.ic-re { background:linear-gradient(135deg,#e03131,#ff8787); }
+.ic-te { background:linear-gradient(135deg,#0c8599,#67e8f9); }
+.ic-pk { background:linear-gradient(135deg,#c2255c,#f783ac); }
+.ic-am { background:linear-gradient(135deg,#e67700,#ffd43b); }
+.ic-in { background:linear-gradient(135deg,#3730a3,#a5b4fc); }
+.ic-cy { background:linear-gradient(135deg,#0891b2,#67e8f9); }
 
-  /* APPS */
-  .apps-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .apps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-  .app-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
-  }
-  .app-card.visible { opacity: 1; transform: translateY(0); }
-  .app-card:hover {
-    border-color: rgba(91,143,255,0.3);
-    box-shadow: 0 20px 60px rgba(91,143,255,0.1);
-    transform: translateY(-4px) !important;
-  }
-  .app-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent3));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .app-card:hover::before { opacity: 1; }
-  .app-num {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 48px;
-    color: rgba(255,255,255,0.04);
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    line-height: 1;
-  }
-  .app-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 17px;
-    color: var(--bright);
-    margin-bottom: 6px;
-  }
-  .app-desc {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 16px;
-  }
-  .app-badges { display: flex; gap: 6px; flex-wrap: wrap; }
-  .app-badge {
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
-  }
-  .badge-live {
-    background: rgba(0,229,195,0.1);
-    border: 1px solid rgba(0,229,195,0.2);
-    color: var(--accent3);
-  }
-  .badge-flutter {
-    background: rgba(91,143,255,0.1);
-    border: 1px solid rgba(91,143,255,0.2);
-    color: var(--accent);
-  }
-  .app-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--accent);
-    text-decoration: none;
-    margin-top: 16px;
-    transition: gap 0.2s;
-  }
-  .app-link:hover { gap: 10px; }
+/* CONTACT */
+.cl { display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:start; }
+.cl-l h3 { font-weight:800;font-size:30px;color:var(--dark);letter-spacing:-1px;margin-bottom:12px;line-height:1.15; }
+.cl-l p { font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px; }
+.c-items { display:flex;flex-direction:column;gap:11px; }
+.c-item { display:flex;align-items:center;gap:13px;padding:15px 17px;border-radius:12px;background:var(--card);border:1px solid var(--border);text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:var(--shadow); }
+.c-item:hover { transform:translateX(6px);border-color:var(--accent);box-shadow:0 6px 22px rgba(232,82,26,.1); }
+.c-ic { width:38px;height:38px;border-radius:9px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0; }
+.c-lb { font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.09em;text-transform:uppercase; }
+.c-vl { font-size:13px;color:var(--dark);font-weight:600; }
+.cform { background:var(--card);border:1px solid var(--border);border-radius:18px;padding:34px;box-shadow:var(--shadow); }
+.fg { margin-bottom:16px; }
+.fl { display:block;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:7px; }
+.fi,.fta { width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:11px 15px;color:var(--dark);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;transition:border-color .2s,box-shadow .2s;resize:vertical; }
+.fi:focus,.fta:focus { outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,82,26,.1); }
+.fta { min-height:108px; }
+.f-btn { width:100%;background:var(--dark);color:#fff;border:none;padding:13px;border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px; }
+.f-btn:hover { background:var(--accent);transform:translateY(-1px); }
 
-  /* TECH */
-  .tech-ticker {
-    overflow: hidden;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 18px 0;
-    background: var(--surface);
-  }
-  .ticker-track {
-    display: flex;
-    gap: 0;
-    animation: ticker 30s linear infinite;
-    white-space: nowrap;
-  }
-  .ticker-track:hover { animation-play-state: paused; }
-  .ticker-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 28px;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    border-right: 1px solid var(--border);
-  }
-  .ticker-item span { color: var(--accent); font-size: 16px; }
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
+footer { padding:30px 52px;background:var(--dark);display:flex;justify-content:space-between;align-items:center; }
+.fc { font-size:12px;color:rgba(255,255,255,.3); }
+.fc strong { color:rgba(255,255,255,.65); }
 
-  /* CONTACT */
-  .contact-section { background: var(--bg); }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-  .contact-info h3 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 36px;
-    color: var(--bright);
-    letter-spacing: -1px;
-    margin-bottom: 20px;
-    line-height: 1.1;
-  }
-  .contact-info p { color: var(--muted); font-size: 13px; margin-bottom: 36px; }
-  .contact-items { display: flex; flex-direction: column; gap: 16px; }
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: border-color 0.2s;
-  }
-  .contact-item:hover { border-color: var(--accent); }
-  .contact-icon {
-    width: 38px; height: 38px;
-    background: rgba(91,143,255,0.1);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-  .contact-detail { flex: 1; }
-  .contact-label { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-  .contact-value { font-size: 13px; color: var(--text); }
-  .contact-form {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 36px;
-  }
-  .form-group { margin-bottom: 20px; }
-  .form-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 8px; }
-  .form-input, .form-textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px 16px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    transition: border-color 0.2s;
-    resize: vertical;
-  }
-  .form-input:focus, .form-textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  .form-textarea { min-height: 100px; }
-  .form-btn {
-    width: 100%;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 6px;
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .form-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+/* REVEAL */
+.rv { opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease; }
+.rv.in { opacity:1;transform:translateY(0); }
+.rvl { opacity:0;transform:translateX(-22px);transition:opacity .65s ease,transform .65s ease; }
+.rvl.in { opacity:1;transform:translateX(0); }
 
-  /* FOOTER */
-  footer {
-    padding: 40px 60px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--surface);
-  }
-  .footer-copy { font-size: 11px; color: var(--muted); }
-  .footer-copy span { color: var(--accent); }
-  .footer-made { font-size: 11px; color: var(--muted); }
-
-  /* SCROLL REVEAL */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* MOBILE */
-  @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
-    .nav-links { display: none; }
-    .hero, section { padding: 80px 20px; }
-    .hero { padding-top: 100px; }
-    .hero-stats { display: none; }
-    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-    footer { flex-direction: column; gap: 16px; text-align: center; }
-  }
-
-  /* DIVIDER */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 0 60px;
-  }
-
-  /* HIGHLIGHT BAR */
-  .highlight-bar {
-    background: linear-gradient(135deg, rgba(91,143,255,0.1), rgba(0,229,195,0.05));
-    border: 1px solid rgba(91,143,255,0.15);
-    border-radius: 12px;
-    padding: 32px 40px;
-    display: flex;
-    gap: 60px;
-    margin-bottom: 60px;
-    flex-wrap: wrap;
-  }
-  .hl-item { }
-  .hl-num {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 32px;
-    color: var(--bright);
-  }
-  .hl-num sub { font-size: 16px; color: var(--accent); }
-  .hl-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+@media(max-width:900px){
+  nav { padding:0 20px; }
+  .nav-links { display:none; }
+  .hero { grid-template-columns:1fr; padding:90px 20px 60px; }
+  .h-card { display:none; }
+  .exp-grid,.cl { grid-template-columns:1fr; }
+  .stats { grid-template-columns:1fr 1fr; }
+  .stabs { grid-template-columns:1fr; }
+  .tab-nav { display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border);gap:4px; }
+  .sec,.stats { padding:70px 20px; }
+  footer { flex-direction:column;gap:10px;text-align:center; }
+}
 </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div id="cur"></div>
+<div id="cur2"></div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">PC<span>.</span></div>
+  <div class="nav-logo"><div class="logo-pip"></div>Pratik Chovatiya</div>
   <div class="nav-links">
     <a href="#skills">Skills</a>
     <a href="#experience">Experience</a>
     <a href="#apps">Apps</a>
     <a href="#contact">Contact</a>
-    <a href="mailto:patelpratik2530@gmail.com" class="nav-cta">Hire Me</a>
+    <a href="mailto:patelpratik2530@gmail.com" class="nav-cta">Hire Me ↗</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <div class="badge-dot"></div>
-      Available for new opportunities
-    </div>
-    <h1 class="hero-title">
-      Pratik<br>
-      <span class="line2">Chovatiya</span><br>
-      <span class="accent">iOS Dev.</span>
-    </h1>
-    <p class="hero-desc">
-      Senior iOS Developer crafting <em>high-performance native apps</em> with Swift, SwiftUI & Flutter. 5+ years, 15+ apps shipped.
-    </p>
-    <div class="hero-actions">
-      <a href="#apps" class="btn-primary">
-        <span>↓</span> View My Work
-      </a>
-      <a href="mailto:patelpratik2530@gmail.com" class="btn-outline">Get In Touch</a>
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div>
+    <div class="h-eyebrow"><div class="h-line"></div>Senior iOS Developer · Rajkot, India</div>
+    <h1 class="h-name">Pratik<br><span class="ghost">Chovatiya</span></h1>
+    <div class="h-role">Swift · SwiftUI · <em>Flutter</em></div>
+    <p class="h-desc">I build <strong>native iOS apps</strong> people love — from live-streaming auctions and super-apps to AI meeting tools and CRM platforms. 5+ years, 10 apps live.</p>
+    <div class="h-btns">
+      <a href="#apps" class="btn-solid">View My Apps ↓</a>
+      <a href="mailto:patelpratik2530@gmail.com" class="btn-out">Get In Touch</a>
     </div>
   </div>
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-num">9<span>+</span></div>
-      <div class="stat-label">Published Apps</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">5<span>+</span></div>
-      <div class="stat-label">Years Experience</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">100<span>K+</span></div>
-      <div class="stat-label">User Base</div>
+  <div class="h-card">
+    <div class="hcard">
+      <div class="hc-head">
+        <div class="hc-av">PC</div>
+        <div><div class="hc-nm">Pratik Chovatiya</div><div class="hc-loc">Rajkot, Gujarat · India 🇮🇳</div></div>
+      </div>
+      <div class="hc-grid">
+        <div class="hcs"><div class="hcs-n">10<sub>+</sub></div><div class="hcs-l">Live Apps</div></div>
+        <div class="hcs"><div class="hcs-n">5<sub>+ yrs</sub></div><div class="hcs-l">Experience</div></div>
+        <div class="hcs"><div class="hcs-n">100<sub>K+</sub></div><div class="hcs-l">Users</div></div>
+        <div class="hcs"><div class="hcs-n">9.7<sub>/10</sub></div><div class="hcs-l">CGPA</div></div>
+      </div>
+      <div class="hc-pills">
+        <span class="hc-pill">Swift</span><span class="hc-pill">SwiftUI</span><span class="hc-pill">Flutter</span>
+        <span class="hc-pill">Firebase</span><span class="hc-pill">Agora SDK</span><span class="hc-pill">Stripe</span>
+        <span class="hc-pill">MVVM</span><span class="hc-pill">CI/CD</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- TICKER -->
-<div class="tech-ticker">
-  <div class="ticker-track" id="ticker">
-    <div class="ticker-item"><span>◆</span>Swift</div>
-    <div class="ticker-item"><span>◆</span>SwiftUI</div>
-    <div class="ticker-item"><span>◆</span>Flutter</div>
-    <div class="ticker-item"><span>◆</span>UIKit</div>
-    <div class="ticker-item"><span>◆</span>Combine</div>
-    <div class="ticker-item"><span>◆</span>Core Data</div>
-    <div class="ticker-item"><span>◆</span>AVFoundation</div>
-    <div class="ticker-item"><span>◆</span>Firebase</div>
-    <div class="ticker-item"><span>◆</span>Agora SDK</div>
-    <div class="ticker-item"><span>◆</span>Twilio</div>
-    <div class="ticker-item"><span>◆</span>Stripe</div>
-    <div class="ticker-item"><span>◆</span>Apple Pay</div>
-    <div class="ticker-item"><span>◆</span>MVVM</div>
-    <div class="ticker-item"><span>◆</span>Fastlane</div>
-    <div class="ticker-item"><span>◆</span>Xcode</div>
-    <div class="ticker-item"><span>◆</span>TestFlight</div>
-    <!-- Duplicate for seamless loop -->
-    <div class="ticker-item"><span>◆</span>Swift</div>
-    <div class="ticker-item"><span>◆</span>SwiftUI</div>
-    <div class="ticker-item"><span>◆</span>Flutter</div>
-    <div class="ticker-item"><span>◆</span>UIKit</div>
-    <div class="ticker-item"><span>◆</span>Combine</div>
-    <div class="ticker-item"><span>◆</span>Core Data</div>
-    <div class="ticker-item"><span>◆</span>AVFoundation</div>
-    <div class="ticker-item"><span>◆</span>Firebase</div>
-    <div class="ticker-item"><span>◆</span>Agora SDK</div>
-    <div class="ticker-item"><span>◆</span>Twilio</div>
-    <div class="ticker-item"><span>◆</span>Stripe</div>
-    <div class="ticker-item"><span>◆</span>Apple Pay</div>
-    <div class="ticker-item"><span>◆</span>MVVM</div>
-    <div class="ticker-item"><span>◆</span>Fastlane</div>
-    <div class="ticker-item"><span>◆</span>Xcode</div>
-    <div class="ticker-item"><span>◆</span>TestFlight</div>
+<div class="ticker">
+  <div class="ticker-row">
+    <div class="ti">📱 <b>Swift</b></div><div class="ti">🎨 <b>SwiftUI</b></div><div class="ti">💙 <b>Flutter</b></div>
+    <div class="ti">🏗 <b>UIKit</b></div><div class="ti">🔥 <b>Firebase</b></div><div class="ti">🎥 <b>Agora SDK</b></div>
+    <div class="ti">💳 <b>Stripe</b></div><div class="ti">🍎 <b>Apple Pay</b></div><div class="ti">📡 <b>Twilio</b></div>
+    <div class="ti">⚡ <b>Combine</b></div><div class="ti">🗄 <b>Core Data</b></div><div class="ti">🚀 <b>Fastlane</b></div>
+    <div class="ti">🧪 <b>XCTest</b></div><div class="ti">🔐 <b>OAuth 2.0</b></div><div class="ti">🤖 <b>AI / ML</b></div>
+    <div class="ti">📱 <b>Swift</b></div><div class="ti">🎨 <b>SwiftUI</b></div><div class="ti">💙 <b>Flutter</b></div>
+    <div class="ti">🏗 <b>UIKit</b></div><div class="ti">🔥 <b>Firebase</b></div><div class="ti">🎥 <b>Agora SDK</b></div>
+    <div class="ti">💳 <b>Stripe</b></div><div class="ti">🍎 <b>Apple Pay</b></div><div class="ti">📡 <b>Twilio</b></div>
+    <div class="ti">⚡ <b>Combine</b></div><div class="ti">🗄 <b>Core Data</b></div><div class="ti">🚀 <b>Fastlane</b></div>
+    <div class="ti">🧪 <b>XCTest</b></div><div class="ti">🔐 <b>OAuth 2.0</b></div><div class="ti">🤖 <b>AI / ML</b></div>
   </div>
 </div>
 
+<!-- STATS -->
+<div class="stats">
+  <div class="sb rv"><div class="sb-n" id="s1">0<sup>+</sup></div><div class="sb-l">Published Apps</div></div>
+  <div class="sb rv"><div class="sb-n" id="s2">0<sup>+ yrs</sup></div><div class="sb-l">Experience</div></div>
+  <div class="sb rv"><div class="sb-n" id="s3">0<sup>%</sup></div><div class="sb-l">Crash-free Rate</div></div>
+  <div class="sb rv"><div class="sb-n" id="s4">0<sup>K+ Users</sup></div><div class="sb-l">Total User Base</div></div>
+</div>
+
 <!-- SKILLS -->
-<section class="skills-section" id="skills">
-  <div class="section-label">Core Competencies</div>
-  <h2 class="section-title reveal">Technical<br>Expertise</h2>
-  <div class="skills-grid reveal">
-    <div class="skill-card">
-      <div class="skill-icon">📱</div>
-      <div class="skill-name">iOS Development</div>
-      <div class="skill-tags">
-        <span class="tag">Swift</span><span class="tag">SwiftUI</span><span class="tag">UIKit</span>
-        <span class="tag">Objective-C</span><span class="tag">Combine</span><span class="tag">CoreData</span>
-        <span class="tag">AVFoundation</span><span class="tag">MapKit</span>
-      </div>
+<section class="sec" id="skills">
+  <div class="eyebrow">Core Competencies</div>
+  <h2 class="sec-h rv">Technical Expertise</h2>
+  <div class="stabs rv">
+    <div class="tab-nav">
+      <button class="stab on" onclick="sw(this,'ios')"><span class="stab-ic">📱</span><span class="stab-nm">iOS Dev</span></button>
+      <button class="stab" onclick="sw(this,'arch')"><span class="stab-ic">🏗</span><span class="stab-nm">Architecture</span></button>
+      <button class="stab" onclick="sw(this,'pay')"><span class="stab-ic">💳</span><span class="stab-nm">Payments</span></button>
+      <button class="stab" onclick="sw(this,'str')"><span class="stab-ic">🎥</span><span class="stab-nm">Streaming</span></button>
+      <button class="stab" onclick="sw(this,'api')"><span class="stab-ic">🔥</span><span class="stab-nm">Backend & APIs</span></button>
+      <button class="stab" onclick="sw(this,'dev')"><span class="stab-ic">🚀</span><span class="stab-nm">DevOps</span></button>
     </div>
-    <div class="skill-card">
-      <div class="skill-icon">🏗</div>
-      <div class="skill-name">Architecture</div>
-      <div class="skill-tags">
-        <span class="tag">MVVM</span><span class="tag">MVC</span><span class="tag">Clean Arch</span>
-        <span class="tag">Delegate</span><span class="tag">Observer</span><span class="tag">Singleton</span>
+    <div class="tab-body">
+      <div class="tpanel on" id="p-ios">
+        <div class="tp-h">iOS Development</div>
+        <div class="tp-d">Deep expertise in the full Apple ecosystem — building fluid, performant native apps using modern Swift paradigms.</div>
+        <div class="tp-tags"><span class="tp-tag">Swift</span><span class="tp-tag">SwiftUI</span><span class="tp-tag">UIKit</span><span class="tp-tag">Objective-C</span><span class="tp-tag">Combine</span><span class="tp-tag">Core Data</span><span class="tp-tag">AVFoundation</span><span class="tp-tag">MapKit</span><span class="tp-tag">StoreKit</span><span class="tp-tag">XCTest</span></div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-lbl"><span>Swift / SwiftUI</span><span>95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>UIKit</span><span>90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Combine / Async</span><span>85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+        </div>
       </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon">💳</div>
-      <div class="skill-name">Payment Integration</div>
-      <div class="skill-tags">
-        <span class="tag">Apple Pay</span><span class="tag">Stripe</span><span class="tag">RazorPay</span>
-        <span class="tag">PayPal</span><span class="tag">In-App Purchase</span><span class="tag">StoreKit</span>
+      <div class="tpanel" id="p-arch">
+        <div class="tp-h">Architecture Patterns</div>
+        <div class="tp-d">Writes clean, scalable code following industry-standard architectural patterns ensuring maintainability and testability.</div>
+        <div class="tp-tags"><span class="tp-tag">MVVM</span><span class="tp-tag">MVC</span><span class="tp-tag">Clean Architecture</span><span class="tp-tag">Delegate Pattern</span><span class="tp-tag">Observer</span><span class="tp-tag">Singleton</span></div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-lbl"><span>MVVM</span><span>95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Clean Architecture</span><span>85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>MVC</span><span>90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+        </div>
       </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon">🎥</div>
-      <div class="skill-name">Live Streaming</div>
-      <div class="skill-tags">
-        <span class="tag">Agora SDK</span><span class="tag">Twilio</span><span class="tag">Wowza</span>
-        <span class="tag">AVPlayer</span><span class="tag">Video Call</span>
+      <div class="tpanel" id="p-pay">
+        <div class="tp-h">Payment Integration</div>
+        <div class="tp-d">Implemented secure multi-gateway payment flows handling $100K+ in monthly transactions across production apps.</div>
+        <div class="tp-tags"><span class="tp-tag">Apple Pay</span><span class="tp-tag">Stripe</span><span class="tp-tag">RazorPay</span><span class="tp-tag">PayPal</span><span class="tp-tag">In-App Purchase</span><span class="tp-tag">StoreKit</span></div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-lbl"><span>Stripe / RazorPay</span><span>90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Apple Pay / StoreKit</span><span>88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>PayPal</span><span>80%</span></div><div class="bar-track"><div class="bar-fill" data-w="80"></div></div></div>
+        </div>
       </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon">🔥</div>
-      <div class="skill-name">Backend & APIs</div>
-      <div class="skill-tags">
-        <span class="tag">RESTful APIs</span><span class="tag">Firebase</span><span class="tag">Alamofire</span>
-        <span class="tag">URLSession</span><span class="tag">JSON/XML</span>
+      <div class="tpanel" id="p-str">
+        <div class="tp-h">Live Streaming & Video</div>
+        <div class="tp-d">Built auction streaming platforms supporting 1000+ concurrent viewers and one-on-one/group video call applications.</div>
+        <div class="tp-tags"><span class="tp-tag">Agora SDK</span><span class="tp-tag">Twilio Video</span><span class="tp-tag">Wowza</span><span class="tp-tag">AVPlayer</span><span class="tp-tag">AVFoundation</span></div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-lbl"><span>Agora SDK</span><span>92%</span></div><div class="bar-track"><div class="bar-fill" data-w="92"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Twilio Video</span><span>85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>AVFoundation</span><span>88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+        </div>
       </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon">🚀</div>
-      <div class="skill-name">DevOps & Tools</div>
-      <div class="skill-tags">
-        <span class="tag">Fastlane</span><span class="tag">CI/CD</span><span class="tag">TestFlight</span>
-        <span class="tag">Git</span><span class="tag">Jira</span><span class="tag">Azure DevOps</span>
+      <div class="tpanel" id="p-api">
+        <div class="tp-h">Backend & APIs</div>
+        <div class="tp-d">Experience integrating complex backend services and real-time databases powering seamless offline-first user experiences.</div>
+        <div class="tp-tags"><span class="tp-tag">RESTful APIs</span><span class="tp-tag">Firebase</span><span class="tp-tag">Alamofire</span><span class="tp-tag">URLSession</span><span class="tp-tag">JSON / XML</span></div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-lbl"><span>RESTful APIs</span><span>95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Firebase Suite</span><span>90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Alamofire</span><span>88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+        </div>
+      </div>
+      <div class="tpanel" id="p-dev">
+        <div class="tp-h">DevOps & Tools</div>
+        <div class="tp-d">CI/CD pipelines that cut deployment time by 50%. 100% first-time App Store approval rate across all published apps.</div>
+        <div class="tp-tags"><span class="tp-tag">Fastlane</span><span class="tp-tag">CI/CD</span><span class="tp-tag">TestFlight</span><span class="tp-tag">Git / GitHub</span><span class="tp-tag">Jira</span><span class="tp-tag">Azure DevOps</span></div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-lbl"><span>Fastlane / CI/CD</span><span>88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Git / GitHub</span><span>95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+          <div class="bar-row"><div class="bar-lbl"><span>Agile / Scrum</span><span>92%</span></div><div class="bar-track"><div class="bar-fill" data-w="92"></div></div></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- EXPERIENCE -->
-<section id="experience" style="background: var(--bg);">
-  <div class="section-label">Work History</div>
-  <h2 class="section-title reveal">Professional<br>Experience</h2>
-
-  <div class="highlight-bar reveal">
-    <div class="hl-item">
-      <div class="hl-num">9<sub>apps</sub></div>
-      <div class="hl-label">Published on App Store</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-num">100<sub>%</sub></div>
-      <div class="hl-label">First-time Approval Rate</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-num">4.5<sub>★</sub></div>
-      <div class="hl-label">Avg. App Rating</div>
-    </div>
-    <div class="hl-item">
-      <div class="hl-num">95<sub>%</sub></div>
-      <div class="hl-label">Crash-free Rate</div>
-    </div>
-  </div>
-
-  <div class="exp-timeline">
-    <div class="exp-item">
-      <div class="exp-dot"></div>
-      <div class="exp-role">Senior iOS Developer</div>
-      <div class="exp-company">Elluminati Inc</div>
-      <div class="exp-period">January 2024 — Present · Rajkot, Gujarat</div>
-      <ul class="exp-list">
-        <li>Architecting high-performance iOS apps using Swift, SwiftUI & Flutter for 100K+ user base</li>
-        <li>Led development of Hyze super app — taxi booking, food delivery & courier services with real-time GPS</li>
-        <li>Implemented live streaming with Agora SDK, video calling via Twilio, multi-gateway payments</li>
-        <li>Optimized app achieving 40% faster load times & 30% reduction in memory footprint</li>
-        <li>Reduced deployment time by 50% via CI/CD pipeline using Fastlane</li>
-        <li>Mentoring 2 junior developers on iOS standards and SwiftUI</li>
+<section class="sec alt" id="experience">
+  <div class="eyebrow">Work History</div>
+  <h2 class="sec-h rv">Professional Experience</h2>
+  <div class="exp-grid">
+    <div class="ecard rv">
+      <div class="ec-top">
+        <div><div class="ec-tag">Senior iOS Developer</div><div class="ec-co">Elluminati Inc</div></div>
+        <div class="ec-per">Jan 2024 — Now</div>
+      </div>
+      <ul class="ec-list">
+        <li>Architected high-performance iOS apps using Swift, SwiftUI & Flutter for 100K+ users</li>
+        <li>Led Hyze super app — taxi, food delivery & courier services with live GPS</li>
+        <li>Live streaming via Agora SDK, video calls via Twilio, multi-gateway payments</li>
+        <li>Achieved 40% faster load times & 30% memory reduction</li>
+        <li>Reduced deployment time 50% with Fastlane CI/CD pipeline</li>
+        <li>Mentoring 2 junior iOS developers on SwiftUI best practices</li>
       </ul>
-      <div class="achievements">
-        <span class="achievement-tag">▲ 40% Faster Load</span>
-        <span class="achievement-tag">▲ 50% Faster Deploy</span>
-        <span class="achievement-tag">▲ 25% User Retention</span>
-        <span class="achievement-tag">1000+ Daily Transactions</span>
+      <div class="ec-chips">
+        <span class="ec-chip">▲ 40% Load Speed</span><span class="ec-chip">▲ 50% Deploy</span>
+        <span class="ec-chip">▲ 25% Retention</span><span class="ec-chip">1K+ Daily Txns</span>
       </div>
     </div>
-
-    <div class="exp-item">
-      <div class="exp-dot"></div>
-      <div class="exp-role">Senior iOS Developer</div>
-      <div class="exp-company">eSparkBiz Technology</div>
-      <div class="exp-period">June 2021 — December 2023 · Rajkot, Gujarat</div>
-      <ul class="exp-list">
-        <li>Developed & maintained 7 native iOS apps from requirements to App Store deployment</li>
-        <li>Built custom audio/video streaming solutions using AVFoundation for media-rich apps</li>
-        <li>Implemented secure auth systems using OAuth 2.0 and JWT</li>
-        <li>Integrated Firebase Realtime DB, Firestore, Cloud Storage & Authentication</li>
-        <li>Worked with Bluetooth LE for printer & OBD device connectivity</li>
-        <li>Implemented push notification strategies achieving 65% open rate</li>
+    <div class="ecard b2 rv" style="transition-delay:.1s">
+      <div class="ec-top">
+        <div><div class="ec-tag">Senior iOS Developer</div><div class="ec-co">eSparkBiz Technology</div></div>
+        <div class="ec-per" style="color:var(--accent2);background:rgba(45,91,227,.08)">Jun 2021 — Dec 2023</div>
+      </div>
+      <ul class="ec-list">
+        <li>Built & shipped 7 native iOS apps from requirements to App Store</li>
+        <li>Audio/video streaming solutions via AVFoundation for media-rich apps</li>
+        <li>OAuth 2.0 & JWT authentication, Firebase Realtime DB & Firestore</li>
+        <li>Bluetooth LE integration for printer & OBD device connectivity</li>
+        <li>Push notification strategy achieving 65% open rate</li>
+        <li>Reduced API response time 35% via caching & optimization</li>
       </ul>
-      <div class="achievements">
-        <span class="achievement-tag">50K+ Auction Users</span>
-        <span class="achievement-tag">$100K+ Monthly Txns</span>
-        <span class="achievement-tag">▲ 35% API Speed</span>
-        <span class="achievement-tag">4.5+ Star Rating</span>
+      <div class="ec-chips">
+        <span class="ec-chip">50K+ Auction Users</span><span class="ec-chip">$100K+ Monthly</span>
+        <span class="ec-chip">▲ 35% API Speed</span><span class="ec-chip">4.5★ Rating</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- APPS -->
-<section class="apps-section" id="apps">
-  <div class="section-label">Published Work</div>
-  <h2 class="section-title reveal">9 Live Apps on<br>the App Store</h2>
-  <div class="apps-grid">
-    <div class="app-card">
-      <div class="app-num">01</div>
-      <div class="app-name">Hyze Customer</div>
-      <div class="app-desc">Multi-service super app — taxi booking, food delivery & courier services with real-time GPS</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
-      <a href="https://apps.apple.com/app/hyze-customer" class="app-link" target="_blank">View on App Store →</a>
+<section class="sec" id="apps">
+  <div class="eyebrow">Published Work</div>
+  <h2 class="sec-h rv">10 Live Apps on the App Store</h2>
+  <div class="filter-row rv">
+    <button class="fb on" onclick="fa('all',this)">All Apps</button>
+    <button class="fb" onclick="fa('ios',this)">iOS Native</button>
+    <button class="fb" onclick="fa('flutter',this)">Flutter</button>
+    <button class="fb" onclick="fa('ai',this)">AI Powered</button>
+  </div>
+  <div class="apps-g">
+    <div class="acard rv" data-c="ai">
+      <div class="ac-t"><div class="ac-ic ic-cy">🎙️</div><div><div class="ac-nm">Memorable</div><div class="ac-ct">AI Meeting Notes · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">AI-powered voice notes app that transforms audio into beautifully organized searchable notes. Features smart transcription, Apple Watch recording, location-tagged meeting maps and action item tracking. Rated 4.7★.</div></div>
+      <div class="ac-f"><span class="ac-badge" style="background:rgba(8,145,178,.1);color:#0891b2;border-color:rgba(8,145,178,.2)">● AI · 4.7★</span><a href="https://apps.apple.com/in/app/memorable/id6756291900" target="_blank" class="ac-lnk">App Store ↗</a></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">02</div>
-      <div class="app-name">Hyze Provider</div>
-      <div class="app-desc">Driver & provider management app with real-time order tracking and analytics dashboard</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
-      <a href="https://apps.apple.com/app/hyze-provider" class="app-link" target="_blank">View on App Store →</a>
+    <div class="acard rv" data-c="ios" style="transition-delay:.06s">
+      <div class="ac-t"><div class="ac-ic ic-or">🚗</div><div><div class="ac-nm">Hyze Customer</div><div class="ac-ct">Super App · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Multi-service super app with taxi booking, food delivery & courier services powered by real-time GPS tracking and multi-gateway payments.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span><a href="https://apps.apple.com/in/app/hyze-customer/id6741472366" target="_blank" class="ac-lnk">App Store ↗</a></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">03</div>
-      <div class="app-name">Klikinz</div>
-      <div class="app-desc">Auction marketplace with live bidding, Agora SDK streaming for 50K+ registered users</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
-      <a href="#" class="app-link">View on App Store →</a>
+    <div class="acard rv" data-c="ios" style="transition-delay:.12s">
+      <div class="ac-t"><div class="ac-ic ic-bl">🛵</div><div><div class="ac-nm">Hyze Provider</div><div class="ac-ct">Driver App · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Driver & provider management with real-time order assignment, live route navigation and earnings dashboard.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span><a href="https://apps.apple.com/in/app/hyze-provider/id6739764418" target="_blank" class="ac-lnk">App Store ↗</a></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">04</div>
-      <div class="app-name">Goals.com</div>
-      <div class="app-desc">Sales CRM platform with pipeline management, analytics & team collaboration tools</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
-      <a href="#" class="app-link">View on App Store →</a>
+    <div class="acard rv" data-c="ios" style="transition-delay:.18s">
+      <div class="ac-t"><div class="ac-ic ic-am">🔨</div><div><div class="ac-nm">Klikinz</div><div class="ac-ct">Auction · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Live auction marketplace with Agora SDK-powered real-time bidding streams for 50K+ registered users and $100K+ monthly volume.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span><a href="#" class="ac-lnk">App Store ↗</a></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">05</div>
-      <div class="app-name">ClearHomes</div>
-      <div class="app-desc">Property management app with listings, scheduling, tenant communication and payments</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
+    <div class="acard rv" data-c="ios" style="transition-delay:.18s">
+      <div class="ac-t"><div class="ac-ic ic-gr">🎯</div><div><div class="ac-nm">Goals.com</div><div class="ac-ct">Sales CRM · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Sales CRM platform with pipeline management, performance analytics and team collaboration tools for growing sales teams.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span><a href="#" class="ac-lnk">App Store ↗</a></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">06</div>
-      <div class="app-name">Jahhez</div>
-      <div class="app-desc">Food delivery platform with real-time order tracking, restaurant discovery and payments</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
+    <div class="acard rv" data-c="ios" style="transition-delay:.24s">
+      <div class="ac-t"><div class="ac-ic ic-te">🏠</div><div><div class="ac-nm">ClearHomes</div><div class="ac-ct">Property · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Property management app with listings, maintenance scheduling, tenant communication portal and integrated rent payments.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">07</div>
-      <div class="app-name">Strike</div>
-      <div class="app-desc">Betting application with live score updates, wallet management and secure transactions</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
+    <div class="acard rv" data-c="ios" style="transition-delay:.30s">
+      <div class="ac-t"><div class="ac-ic ic-re">🍔</div><div><div class="ac-nm">Jahhez</div><div class="ac-ct">Food Delivery · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Food delivery platform with real-time order tracking, restaurant discovery, smart filters and secure in-app payments.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">08</div>
-      <div class="app-name">Elevator</div>
-      <div class="app-desc">Task management application with team workflows, notifications and productivity insights</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span></div>
+    <div class="acard rv" data-c="ios" style="transition-delay:.36s">
+      <div class="ac-t"><div class="ac-ic ic-pu">⚡</div><div><div class="ac-nm">Strike</div><div class="ac-ct">Betting · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Sports betting app with live score feeds, secure wallet management and real-time transaction processing.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span></div>
     </div>
-    <div class="app-card">
-      <div class="app-num">09</div>
-      <div class="app-name">Paddle</div>
-      <div class="app-desc">Business idea platform connecting entrepreneurs with mentors and investors</div>
-      <div class="app-badges"><span class="app-badge badge-live">● Live</span><span class="app-badge badge-flutter">Flutter</span></div>
+    <div class="acard rv" data-c="ios" style="transition-delay:.42s">
+      <div class="ac-t"><div class="ac-ic ic-in">📋</div><div><div class="ac-nm">Elevator</div><div class="ac-ct">Productivity · iOS</div></div></div>
+      <div class="ac-b"><div class="ac-d">Task management app with team workflows, smart notifications, productivity analytics and project milestone tracking.</div></div>
+      <div class="ac-f"><span class="ac-badge">● Live</span></div>
+    </div>
+    <div class="acard rv" data-c="flutter" style="transition-delay:.48s">
+      <div class="ac-t"><div class="ac-ic ic-pk">💡</div><div><div class="ac-nm">Paddle</div><div class="ac-ct">Business · Flutter</div></div></div>
+      <div class="ac-b"><div class="ac-d">Business idea platform built with Flutter, connecting entrepreneurs with mentors and investors for cross-platform reach.</div></div>
+      <div class="ac-f"><span class="ac-badge" style="background:rgba(45,91,227,.1);color:var(--accent2);border-color:rgba(45,91,227,.2)">Flutter</span></div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact-section" id="contact">
-  <div class="section-label">Get In Touch</div>
-  <div class="contact-grid">
-    <div class="contact-info reveal">
-      <h3>Let's build something great together</h3>
-      <p>Open to full-time roles, freelance projects & exciting startup opportunities. Reach out and let's talk.</p>
-      <div class="contact-items">
-        <a href="mailto:patelpratik2530@gmail.com" class="contact-item">
-          <div class="contact-icon">✉</div>
-          <div class="contact-detail">
-            <div class="contact-label">Email</div>
-            <div class="contact-value">patelpratik2530@gmail.com</div>
-          </div>
-          <span style="color: var(--muted);">→</span>
+<section class="sec alt" id="contact">
+  <div class="eyebrow">Get In Touch</div>
+  <div class="cl">
+    <div class="rvl">
+      <div class="cl-l">
+        <h3>Let's build something great together</h3>
+        <p>Open to full-time iOS roles, freelance projects & exciting startup opportunities. I reply within 24 hours.</p>
+      </div>
+      <div class="c-items">
+        <a href="mailto:patelpratik2530@gmail.com" class="c-item">
+          <div class="c-ic">✉️</div>
+          <div><div class="c-lb">Email</div><div class="c-vl">patelpratik2530@gmail.com</div></div>
+          <span style="margin-left:auto;color:var(--muted)">→</span>
         </a>
-        <a href="tel:+918866487445" class="contact-item">
-          <div class="contact-icon">📱</div>
-          <div class="contact-detail">
-            <div class="contact-label">Phone</div>
-            <div class="contact-value">+91 8866487445</div>
-          </div>
-          <span style="color: var(--muted);">→</span>
+        <a href="tel:+918866487445" class="c-item">
+          <div class="c-ic">📱</div>
+          <div><div class="c-lb">Phone</div><div class="c-vl">+91 8866487445</div></div>
+          <span style="margin-left:auto;color:var(--muted)">→</span>
         </a>
-        <div class="contact-item" style="cursor: default;">
-          <div class="contact-icon">📍</div>
-          <div class="contact-detail">
-            <div class="contact-label">Location</div>
-            <div class="contact-value">Rajkot, Gujarat, India</div>
-          </div>
+        <div class="c-item" style="cursor:default">
+          <div class="c-ic">📍</div>
+          <div><div class="c-lb">Location</div><div class="c-vl">Rajkot, Gujarat, India 🇮🇳</div></div>
         </div>
       </div>
     </div>
-    <div class="contact-form reveal">
-      <div class="form-group">
-        <label class="form-label">Your Name</label>
-        <input type="text" class="form-input" placeholder="John Doe">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input type="email" class="form-input" placeholder="john@company.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
-      </div>
-      <button class="form-btn" onclick="handleFormSubmit(this)">Send Message →</button>
+    <div class="cform rv">
+      <div class="fg"><label class="fl">Your Name</label><input class="fi" type="text" id="fn" placeholder="John Doe"></div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="fe" placeholder="john@company.com"></div>
+      <div class="fg"><label class="fl">Message</label><textarea class="fta" id="fm" placeholder="Tell me about your project..."></textarea></div>
+      <button class="f-btn" onclick="send(this)"><span>Send Message</span><span>→</span></button>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-copy">© 2025 <span>Pratik Chovatiya</span> — Senior iOS Developer</div>
-  <div class="footer-made">Rajkot, Gujarat · India 🇮🇳</div>
+  <div class="fc">© 2025 <strong>Pratik Chovatiya</strong> — Senior iOS Developer</div>
+  <div class="fc">Made with ♥ in Rajkot, India</div>
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx - 6 + 'px';
-    cursor.style.top = my - 6 + 'px';
+// CURSOR
+const c=document.getElementById('cur'),c2=document.getElementById('cur2');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c.style.left=mx+'px';c.style.top=my+'px';});
+(function loop(){tx+=(mx-tx)*.1;ty+=(my-ty)*.1;c2.style.left=tx+'px';c2.style.top=ty+'px';requestAnimationFrame(loop);})();
+
+// REVEAL
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');animBars(x.target);animStats(x.target);}});},{threshold:.1});
+document.querySelectorAll('.rv,.rvl').forEach(el=>obs.observe(el));
+
+// STATS COUNTER
+const targets={s1:10,s2:5,s3:95,s4:100};
+const suffixes={s1:'<sup>+</sup>',s2:'<sup>+ yrs</sup>',s3:'<sup>%</sup>',s4:'<sup>K+ Users</sup>'};
+let counted={};
+function animStats(el){
+  Object.keys(targets).forEach(id=>{
+    const el2=document.getElementById(id);
+    if(!el2||counted[id])return;
+    if(isInView(el2)){
+      counted[id]=true;
+      let v=0,t=targets[id],step=t/45;
+      const tmr=setInterval(()=>{v=Math.min(v+step,t);el2.innerHTML=Math.floor(v)+suffixes[id];if(v>=t)clearInterval(tmr);},28);
+    }
   });
-  function animRing() {
-    rx += (mx - rx - 18) * 0.12;
-    ry += (my - ry - 18) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
-  }
-  animRing();
+}
+function isInView(el){const r=el.getBoundingClientRect();return r.top<window.innerHeight&&r.bottom>0;}
+document.addEventListener('scroll',()=>{Object.keys(targets).forEach(id=>{const el=document.getElementById(id);if(el&&!counted[id]&&isInView(el)){animStats(el);}});});
 
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+// SKILL TABS
+function sw(btn,id){
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tpanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  const panel=document.getElementById('p-'+id);
+  panel.classList.add('on');
+  panel.querySelectorAll('.bar-fill').forEach(b=>{b.style.width='0';setTimeout(()=>{b.style.width=b.dataset.w+'%';},50);});
+}
+function animBars(container){container.querySelectorAll('.bar-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});}
 
-  document.querySelectorAll('.reveal, .exp-item, .app-card').forEach(el => observer.observe(el));
-
-  // Stagger app cards
-  document.querySelectorAll('.app-card').forEach((card, i) => {
-    card.style.transitionDelay = (i * 0.07) + 's';
+// FILTER APPS
+function fa(cat,btn){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.acard').forEach(card=>{
+    card.style.display=(cat==='all'||card.dataset.c===cat)?'block':'none';
   });
+}
 
-  // Form submit
-  function handleFormSubmit(btn) {
-    const name = btn.closest('.contact-form').querySelector('input[type=text]').value;
-    const email = btn.closest('.contact-form').querySelector('input[type=email]').value;
-    const msg = btn.closest('.contact-form').querySelector('textarea').value;
-    if (!name || !email || !msg) { alert('Please fill all fields'); return; }
-    btn.textContent = 'Message Sent ✓';
-    btn.style.background = 'var(--accent3)';
-    btn.style.color = '#0a0a0f';
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 3000);
+// FORM
+function send(btn){
+  const n=document.getElementById('fn').value.trim();
+  const e=document.getElementById('fe').value.trim();
+  const m=document.getElementById('fm').value.trim();
+  if(!n||!e||!m){
+    btn.style.background='#dc2626';btn.querySelector('span').textContent='Please fill all fields';
+    setTimeout(()=>{btn.style.background='';btn.querySelector('span').textContent='Send Message';},2000);return;
   }
+  btn.innerHTML='✓ Message Sent!';btn.style.background='var(--accent3)';
+  setTimeout(()=>{
+    btn.innerHTML='<span>Send Message</span><span>→</span>';btn.style.background='';
+    document.getElementById('fn').value='';document.getElementById('fe').value='';document.getElementById('fm').value='';
+  },3000);
+}
 
-  // Smooth active nav
-  const sections = document.querySelectorAll('section[id], nav');
-  const links = document.querySelectorAll('.nav-links a');
+// Init bars for first panel
+setTimeout(()=>{document.querySelectorAll('#p-ios .bar-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});},700);
 </script>
 </body>
 </html>
